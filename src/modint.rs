@@ -30,10 +30,11 @@ impl<Mod: ModTrait> ModInt<Mod> {
         })
     }
 
-    pub fn value(&self) -> ModValue {
+    pub fn value(self) -> ModValue {
         self.value
     }
 
+    #[allow(clippy::many_single_char_names)]
     pub fn inv(self) -> Self {
         use std::mem::swap;
 
@@ -50,8 +51,8 @@ impl<Mod: ModTrait> ModInt<Mod> {
 
         while a != 0 {
             let q = b / a;
-            b = b - a * q;
-            y = y - x.clone() * Self::new(q);
+            b -= a * q;
+            y -= x * Self::new(q);
             swap(&mut a, &mut b);
             swap(&mut x, &mut y);
         }
@@ -69,7 +70,7 @@ impl<Mod: ModTrait> ModInt<Mod> {
 
         while exp > 0 {
             if (exp & 1) == 1 {
-                acc = acc * base;
+                acc *= base;
             }
             exp >>= 1;
             base = base * base;
@@ -82,6 +83,7 @@ impl<Mod: ModTrait> ModInt<Mod> {
 //
 // Ops
 //
+#[allow(clippy::suspicious_arithmetic_impl)]
 impl<Mod: ModTrait> Add for ModInt<Mod> {
     type Output = Self;
 
@@ -95,6 +97,7 @@ impl<Mod: ModTrait> Add for ModInt<Mod> {
     }
 }
 
+#[allow(clippy::suspicious_arithmetic_impl)]
 impl<Mod: ModTrait> Div for ModInt<Mod> {
     type Output = Self;
 
