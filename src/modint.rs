@@ -2,12 +2,42 @@ use std::cmp::{Eq, PartialEq};
 use std::fmt::Debug;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
+/// Type to hold a value in ModInt.
 pub type ModValue = u64;
 
+/// Used to pass a modulus to ModInt.
+///
+/// # Examples
+///
+/// ```
+/// use tklib::modint;
+///
+/// #[derive(Debug, Copy, Clone)]
+/// struct Mod13 {}
+/// impl modint::ModTrait for Mod13 {
+///     fn modulus() -> modint::ModValue {
+///         13
+///     }
+/// }
+/// type ModInt13 = modint::ModInt<Mod13>;
+///
+/// assert_eq!(ModInt13::new(5), ModInt13::new(2) - ModInt13::new(10));
+/// ```
 pub trait ModTrait: Debug + Copy + Clone {
     fn modulus() -> ModValue;
 }
 
+/// The static F_p integer type.
+///
+/// # Examples
+///
+/// ```
+/// use tklib::modint;
+///
+/// type Mint = modint::ModInt998244353;
+/// assert_eq!(Mint::new(1), Mint::new(998244352) + Mint::new(2));
+/// assert_eq!(Mint::new(6), Mint::new(2) * Mint::new(3));
+/// ```
 #[derive(Debug, Copy, Clone)]
 pub struct ModInt<Mod: ModTrait> {
     value: ModValue,
@@ -22,6 +52,17 @@ impl<Mod: ModTrait> ModInt<Mod> {
         }
     }
 
+    /// Constructs a new ModInt.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use tklib::modint;
+    ///
+    /// type Mint = modint::ModInt998244353;
+    ///
+    /// assert_eq!(Mint::new(2), Mint::new(998244354) + Mint::new(1));
+    /// ```
     pub fn new(value: ModValue) -> Self {
         Self::new_unchecked(if value < Mod::modulus() {
             value
@@ -30,10 +71,34 @@ impl<Mod: ModTrait> ModInt<Mod> {
         })
     }
 
+    /// Returns the raw value.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use tklib::modint;
+    ///
+    /// type Mint = modint::ModInt998244353;
+    ///
+    /// assert_eq!(3, Mint::new(3).value());
+    /// ```
     pub fn value(self) -> ModValue {
         self.value
     }
 
+    /// Takes the inverse of self, using the extended Euclidean algorithm.
+    /// The greatest common divisor of `self.value()`
+    /// and the modulus is required to be 1.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use tklib::modint;
+    ///
+    /// type Mint = modint::ModInt1000000007;
+    ///
+    /// assert_eq!(Mint::new(500000004), Mint::new(2).inv());
+    /// ```
     #[allow(clippy::many_single_char_names)]
     pub fn inv(self) -> Self {
         use std::mem::swap;
@@ -64,6 +129,21 @@ impl<Mod: ModTrait> ModInt<Mod> {
         y
     }
 
+    /// Raises self to the power of exp, using exponentiation by squaring.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use tklib::modint;
+    ///
+    /// type Mint = modint::ModInt998244353;
+    ///
+    /// assert_eq!(Mint::new(4), Mint::new(2).pow(2));
+    /// assert_eq!(
+    ///     Mint::new(926495343),
+    ///     Mint::new(3).pow(5_000_000_000_000_000)
+    /// );
+    /// ```
     pub fn pow(self, mut exp: u64) -> Self {
         let mut base = self;
         let mut acc = Self::new_unchecked(1);
