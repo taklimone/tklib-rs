@@ -270,7 +270,11 @@ mod detail {
         }
     }
 }
+
+/// The ModInt with modulus 1000000007.
 pub type ModInt1000000007 = ModInt<detail::Mod1000000007>;
+
+/// The ModInt with modulus 998244353.
 pub type ModInt998244353 = ModInt<detail::Mod998244353>;
 
 #[cfg(test)]
