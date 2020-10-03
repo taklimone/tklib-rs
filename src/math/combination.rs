@@ -114,7 +114,6 @@ impl Combination {
         self.facinv[n]
     }
 
-    #[allow(clippy::many_single_char_names)]
     fn inv(a: u64, p: u64) -> u64 {
         let mut acc = 1;
         let mut base = a;
