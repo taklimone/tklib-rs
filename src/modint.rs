@@ -10,21 +10,19 @@ pub type ModValue = u64;
 /// # Examples
 ///
 /// ```
-/// use tklib::modint;
+/// use tklib::modint::{ModValue, ModTrait, ModInt};
 ///
 /// #[derive(Debug, Copy, Clone)]
 /// struct Mod13 {}
-/// impl modint::ModTrait for Mod13 {
-///     fn modulus() -> modint::ModValue {
-///         13
-///     }
+/// impl ModTrait for Mod13 {
+///     const MOD: ModValue = 13;
 /// }
-/// type ModInt13 = modint::ModInt<Mod13>;
+/// type ModInt13 = ModInt<Mod13>;
 ///
 /// assert_eq!(ModInt13::new(5), ModInt13::new(2) - ModInt13::new(10));
 /// ```
 pub trait ModTrait: Debug + Copy + Clone {
-    fn modulus() -> ModValue;
+    const MOD: ModValue;
 }
 
 /// The static F_p integer type.
@@ -64,10 +62,10 @@ impl<Mod: ModTrait> ModInt<Mod> {
     /// assert_eq!(Mint::new(2), Mint::new(998244354) + Mint::new(1));
     /// ```
     pub fn new(value: ModValue) -> Self {
-        Self::new_unchecked(if value < Mod::modulus() {
+        Self::new_unchecked(if value < Mod::MOD {
             value
         } else {
-            value % Mod::modulus()
+            value % Mod::MOD
         })
     }
 
@@ -110,7 +108,7 @@ impl<Mod: ModTrait> ModInt<Mod> {
         );
 
         let mut a = self.value();
-        let mut b = Mod::modulus();
+        let mut b = Mod::MOD;
         let mut x = Self::new_unchecked(1);
         let mut y = Self::new_unchecked(0);
 
@@ -169,11 +167,7 @@ impl<Mod: ModTrait> Add for ModInt<Mod> {
 
     fn add(self, rhs: Self) -> Self {
         let out = self.value + rhs.value;
-        Self::new_unchecked(if out < Mod::modulus() {
-            out
-        } else {
-            out - Mod::modulus()
-        })
+        Self::new_unchecked(if out < Mod::MOD { out } else { out - Mod::MOD })
     }
 }
 
@@ -201,7 +195,7 @@ impl<Mod: ModTrait> Neg for ModInt<Mod> {
         Self::new_unchecked(if self.value == 0 {
             0
         } else {
-            Mod::modulus() - self.value
+            Mod::MOD - self.value
         })
     }
 }
@@ -211,7 +205,7 @@ impl<Mod: ModTrait> Sub for ModInt<Mod> {
 
     fn sub(self, rhs: Self) -> Self {
         Self::new_unchecked(if self.value < rhs.value {
-            (Mod::modulus() + self.value) - rhs.value
+            (Mod::MOD + self.value) - rhs.value
         } else {
             self.value - rhs.value
         })
@@ -256,18 +250,14 @@ mod detail {
     pub struct Mod1000000007 {}
 
     impl super::ModTrait for Mod1000000007 {
-        fn modulus() -> super::ModValue {
-            1_000_000_007
-        }
+        const MOD: super::ModValue = 1_000_000_007;
     }
 
     #[derive(Debug, Copy, Clone)]
     pub struct Mod998244353 {}
 
     impl super::ModTrait for Mod998244353 {
-        fn modulus() -> super::ModValue {
-            998_244_353
-        }
+        const MOD: super::ModValue = 998_244_353;
     }
 }
 
@@ -308,9 +298,7 @@ mod tests {
         struct Mod6 {}
 
         impl ModTrait for Mod6 {
-            fn modulus() -> ModValue {
-                6
-            }
+            const MOD: ModValue = 6;
         }
 
         type Mint = ModInt<Mod6>;
