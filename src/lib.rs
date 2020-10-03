@@ -1,4 +1,4 @@
 //! Competitive Programming Library.
 
-pub mod scan;
-pub mod modint;
+pub mod math;
+pub mod utils;

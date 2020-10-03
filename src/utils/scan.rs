@@ -16,7 +16,7 @@ impl<R: Read> Scanner<R> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::scan::Scanner;
+    /// use tklib::utils::scan::Scanner;
     ///
     /// let stdin = std::io::stdin();
     /// let mut sc = Scanner::new(stdin.lock());
@@ -33,7 +33,7 @@ impl<R: Read> Scanner<R> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::scan::Scanner;
+    /// use tklib::utils::scan::Scanner;
     ///
     /// let input = "4 3";
     /// let mut sc = Scanner::new(input.as_bytes());
@@ -62,7 +62,7 @@ impl<R: Read> Scanner<R> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::scan::Scanner;
+    /// use tklib::utils::scan::Scanner;
     ///
     /// let input = "\
     /// 5
@@ -85,7 +85,7 @@ impl<R: Read> Scanner<R> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::scan::Scanner;
+    /// use tklib::utils::scan::Scanner;
     ///
     /// let input = ".#..#";
     /// let mut sc = Scanner::new(input.as_bytes());

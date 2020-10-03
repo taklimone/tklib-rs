@@ -10,7 +10,7 @@ pub type ModValue = u64;
 /// # Examples
 ///
 /// ```
-/// use tklib::modint::{ModValue, ModTrait, ModInt};
+/// use tklib::math::modint::{ModValue, ModTrait, ModInt};
 ///
 /// #[derive(Debug, Copy, Clone)]
 /// struct Mod13 {}
@@ -30,7 +30,7 @@ pub trait ModTrait: Debug + Copy + Clone {
 /// # Examples
 ///
 /// ```
-/// use tklib::modint;
+/// use tklib::math::modint;
 ///
 /// type Mint = modint::ModInt998244353;
 /// assert_eq!(Mint::new(1), Mint::new(998244352) + Mint::new(2));
@@ -55,7 +55,7 @@ impl<Mod: ModTrait> ModInt<Mod> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::modint;
+    /// use tklib::math::modint;
     ///
     /// type Mint = modint::ModInt998244353;
     ///
@@ -74,7 +74,7 @@ impl<Mod: ModTrait> ModInt<Mod> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::modint;
+    /// use tklib::math::modint;
     ///
     /// type Mint = modint::ModInt998244353;
     ///
@@ -91,7 +91,7 @@ impl<Mod: ModTrait> ModInt<Mod> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::modint;
+    /// use tklib::math::modint;
     ///
     /// type Mint = modint::ModInt1000000007;
     ///
@@ -132,7 +132,7 @@ impl<Mod: ModTrait> ModInt<Mod> {
     /// # Examples
     ///
     /// ```
-    /// use tklib::modint;
+    /// use tklib::math::modint;
     ///
     /// type Mint = modint::ModInt998244353;
     ///
