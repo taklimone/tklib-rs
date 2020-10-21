@@ -127,9 +127,19 @@ fn lsb(i: usize) -> usize {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn from_slice() {
-        // add a random test
-        todo!();
+    fn it_works() {
+        let a = [1, 2, 3];
+        let mut fw = Fenwick::from_slice(&a);
+
+        assert_eq!(3, fw.sum(2));
+
+        fw.push(4);
+        assert_eq!(10, fw.sum(4));
+
+        fw.add(2, 2);
+        assert_eq!(8, fw.sum(3));
     }
 }
